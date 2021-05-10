@@ -1,4 +1,4 @@
-const omdb_url = "http://www.omdbapi.com/?apikey=b867de79&type=movie&"
+const omdb_url = "https://www.omdbapi.com/?apikey=b867de79&type=movie&"
 //const apikey = "b867de79"
 let timer;
 let currentResults = [];

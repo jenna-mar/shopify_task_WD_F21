@@ -4,7 +4,7 @@
 
 Solution fulfils all listed requirements of the [Shopify - Fall 2021 - Web Developer Internship Challenge](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit#). Thus, it should be possible to search for movies using the Open Movie Database, and nominate selections from the results.
 
-A deployed instance is available to view and test [here](--).
+A deployed instance is available to view and test [here](https://evening-scrubland-58968.herokuapp.com/).
 
 ##### Bonus
 
@@ -30,7 +30,7 @@ Programatically, the command-line environment for installation requires:
 From the project directory:
 
 * Install required gems via `bundle install`
-* Run the database migration via `rails db:migrate`
+* Run the database migration via `rake db:migrate`
 * Instantiate a local server instance of the application via `rails server`
 
 ### Usage
