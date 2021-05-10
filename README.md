@@ -19,6 +19,8 @@ Note that, by design, this is in contrast to behaviour implicit on the given [ex
 
 To illustrate this subtle difference, note that, per the provided [design](https://docs.google.com/document/d/1SdR9rQpocsH5rPTOcxr9noqHRld5NJlylKO9Hf94U8U/edit#heading=h.c7xqfkhsqnd4), the movie titled "Rambo (1999)" is displayed as a result for the search query "ram". However, when one uses the search query "ram" in OMDB, this item **would not** be selected since the search query "ram" matches with movies containing only the word "ram" exactly. By design, since we prefer not to lemmatize word variants in order to resolve white space, we abide by the results provided by an OMDB search query for the given keyword.
 
+We also assume that the banner that appears when 5 nominations are added only appears the first time a fifth movie is added to the nomination list. If movies are subsequently removed from the nomination list, the banner remains, as the user was previously in a finished state of adding movies. The banner is not necessarily persistent; i.e. if the user removes nominations such that there are less than 5 and refreshes the page, the banner will not appear until 5 nominations have been added again. We have additionally assumed that it is possible to add more than 5 movies to the nomination list (up to an infinite amount), as it was not particularly specified in the requirements.
+
 ### Prerequisites
 
 Programatically, the command-line environment for installation requires:

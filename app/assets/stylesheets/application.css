@@ -69,3 +69,7 @@ li button{
     color: #fff;
     font-weight: bold;
 }
+
+#extra-text{
+	visibility: hidden;
+}

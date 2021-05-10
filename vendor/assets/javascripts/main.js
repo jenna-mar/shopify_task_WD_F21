@@ -41,8 +41,8 @@ function requestMovies(){
 
 function searchOMDB(query){
 	const search_input = document.getElementById("search");
-	document.getElementById("results_list").innerHTML = "";
 	if (query && query.length !== 0){
+		document.getElementById("results_list").innerHTML = "";
 		//we will use the default search behavior from omdb, which searches only for titles containing the query word exactly (not containing).
 		fetch(omdb_url+"s="+encodeURIComponent(query)).then(response => {
 			response.json().then(function(data) {
@@ -69,6 +69,7 @@ function searchOMDB(query){
 				} else {
 					document.getElementById("results_list").innerHTML = "No results found.";
 				}
+				if (document.getElementById("extra-text").style.visibility !== "visible") document.getElementById("extra-text").style.visibility = "visible";
 				document.getElementById("query").innerHTML = query;
 				search_input.disabled = false;
 			});
