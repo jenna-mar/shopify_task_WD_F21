@@ -8,9 +8,11 @@ window.onload = initialize;
 
 function initialize(){
 	const search_input = document.getElementById("search");
+	//pre-emptively disable this in case there is a URL query to process
+	search_input.disabled = true;
 	search_input.addEventListener("keyup", e => {
 		clearTimeout(timer);
-		timer = setTimeout(searchOMDB, 1000);
+		timer = setTimeout(requestMovies, 1000);
 	});
 	//get nominated movies
 	fetch("/nominations").then(response => {
@@ -20,18 +22,28 @@ function initialize(){
 			if (nominatedMovies.length >= 5){
 				document.getElementById("finished-nominations-banner").style.visibility = "visible";
 			}
+			//after nominations are loaded, check if url has a query already
+			const params = new URLSearchParams(window.location.search);
+			const query = params.get('q');
+			search_input.value = query;
+			searchOMDB(query);
 		})
 	});
 }
 
-function searchOMDB(){
+function requestMovies(){
 	const search_input = document.getElementById("search");
 	const query = search_input.value;
+	search_input.disabled = true;
+	history.pushState({'q':query}, '', '/?q='+encodeURIComponent(query));
+	searchOMDB(query);
+}
+
+function searchOMDB(query){
+	const search_input = document.getElementById("search");
 	document.getElementById("results_list").innerHTML = "";
-	
-	if (query.length !== 0){
-		search_input.disabled = true;
-		//?? we will use a wildcard search to emulate results seen in the example image.
+	if (query && query.length !== 0){
+		//we will use the default search behavior from omdb, which searches only for titles containing the query word exactly (not containing).
 		fetch(omdb_url+"s="+encodeURIComponent(query)).then(response => {
 			response.json().then(function(data) {
 				if (data.Search){
@@ -46,7 +58,6 @@ function searchOMDB(){
 						new_movie.appendChild(new_movie_button);
 						listElements.appendChild(new_movie);
 
-						
 						new_movie_button.appendChild(document.createTextNode("Nominate"));
 						new_movie_button.setAttribute('name', m.imdbID);
 						new_movie_button.addEventListener('click', nominate.bind(event, m.Title, m.Year, m.imdbID));
@@ -56,7 +67,7 @@ function searchOMDB(){
 
 					document.getElementById("results_list").appendChild(listElements);
 				} else {
-					document.getElementById("results_list").innerHTML += "No results found.";
+					document.getElementById("results_list").innerHTML = "No results found.";
 				}
 				document.getElementById("query").innerHTML = query;
 				search_input.disabled = false;
@@ -64,8 +75,11 @@ function searchOMDB(){
 		})
 		.catch(error => {
 			console.error("There was an error fetching from OMDb");
+			document.getElementById("results_list").innerHTML = "Error encountered fetching results";
 			search_input.disabled = false;
 		});
+	} else {
+		search_input.disabled = false;
 	}
 }
 
